@@ -86,9 +86,9 @@ export function apply(ctx: Context) {
 }
 ```
 
-Run again: the process dies with your error. A plugin that fails to load is a loud failure, not a skipped entry.
+Run again: the terminal prints nothing and the process exits 0. The failure is still recorded — the fiber enters `FAILED` and reports through the Cordis logger service — but this tutorial's launcher mounts no console exporter, so the report stays in the logger's in-memory buffer instead of reaching your terminal.
 
-One caveat worth knowing early: a config entry whose module cannot be **resolved** — a typo'd path or package name — is reported through the Cordis logger service instead of crashing the process, and at boot that report can be lost before a console exporter is watching. If a freshly added entry seems to do nothing, check the spelling first.
+The same reporting path covers a config entry whose module cannot be **resolved** — a typo'd path or package name — so both failures look like nothing happened. If a freshly added entry seems to do nothing, check the spelling first. To see these reports, mount `@deepseek-ai/cordis-plugin-logger-console` or register your own exporter with `ctx.logger.exporter()`.
 
 Next: [Lifecycle and effects](02-lifecycle-and-effects.md) — what happens when a plugin unloads.
 
